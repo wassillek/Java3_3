@@ -258,7 +258,7 @@ public class Controller implements Initializable {
 
     private void loadLastMessageses(String messages) {
         int firstIndex;
-        int contMessageses = 2;
+        int contMessageses = 100;
 
         String[] messageses = messages.split("\n");
         int lengthMessageses = messageses.length;
