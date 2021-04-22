@@ -109,6 +109,9 @@ public class Controller implements Initializable {
                             if (str.startsWith("/auth_ok")) {
                                 nickname = str.split("\\s+")[1];
                                 setAuthenticated(true);
+                                FileService.openFileToWrite(loginField.getText().trim());
+
+                                loadLastMessageses(FileService.readAllMessages());
                                 break;
                             }
                             if (str.startsWith("/reg_ok")) {
@@ -128,6 +131,7 @@ public class Controller implements Initializable {
 
                         if (str.startsWith("/")) {
                             if (str.equals("/end")) {
+                                FileService.closeFile();
                                 break;
                             }
                             // Обновление списка клиентов
@@ -148,6 +152,7 @@ public class Controller implements Initializable {
                             //==============//
                         } else {
                             textArea.appendText(str + "\n");
+                            FileService.writeToFile(str + "\n");
                         }
                     }
                 } catch (IOException e) {
@@ -248,6 +253,23 @@ public class Controller implements Initializable {
             out.writeUTF(msg);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void loadLastMessageses(String messages) {
+        int firstIndex;
+        int contMessageses = 2;
+
+        String[] messageses = messages.split("\n");
+        int lengthMessageses = messageses.length;
+        if (lengthMessageses < contMessageses) {
+            firstIndex = 0;
+        }
+        else {
+            firstIndex = lengthMessageses - contMessageses;
+        }
+        for (int i = firstIndex; i < lengthMessageses; i++) {
+            textArea.appendText(messageses[i] + "\n");
         }
     }
 }
